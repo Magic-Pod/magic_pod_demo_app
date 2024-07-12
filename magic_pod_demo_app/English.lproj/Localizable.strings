@@ -9,6 +9,7 @@
 "viewTitle" = "User Registration";
 "nameFieldLabel" = "    Name";
 "sexFieldLabel" = "    Sex";
+"passwordFieldLabel" = "    Password";
 "registerBackButtonTitle" = "Back";
 "registerButtonTitle" = "Register";
 "registeringLabel" = "Registering...";

@@ -14,6 +14,8 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
     fileprivate var nameError: UILabel!
     fileprivate var sexField: UITextField!
     fileprivate var sexError: UILabel!
+    fileprivate var passwordField: UITextField!
+    fileprivate var passwordError: UILabel!
     fileprivate var registerBackButton: UIButton!
     fileprivate var registerButton: UIButton!
     fileprivate var messageView: UIView!
@@ -25,15 +27,19 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
         view.backgroundColor = UIColor(red: 236 / 255.0, green: 240 / 255.0, blue: 241 / 255.0, alpha: 1.0)
         nameField = createInputField(frame: CGRect(x: 0, y: 100, width: view.frame.width, height: 56.0), text: "nameFieldLabel".localized)
         sexField = createInputField(frame: CGRect(x: 0, y: 200, width: view.frame.width, height: 56.0), text: "sexFieldLabel".localized)
+        passwordField = createSecureField(frame: CGRect(x: 0, y: 300, width: view.frame.width, height: 56.0), text: "passwordFieldLabel".localized)
         nameError = createErrorLabel(y: nameField.frame.origin.y + nameField.bounds.size.height + 8.0)
         sexError = createErrorLabel(y: sexField.frame.origin.y + sexField.bounds.size.height + 8.0)
+        passwordError = createErrorLabel(y: passwordField.frame.origin.y + passwordField.bounds.size.height + 8.0)
         registerBackButton = self.createButton(title: "registerBackButtonTitle".localized, target: self,selector: #selector(SignupViewController.registerBackPressed(_:)), event: UIControl.Event.touchUpInside)
         registerButton = self.createButton(title: "registerButtonTitle".localized, target: self,selector: #selector(SignupViewController.registerPressed(_:)), event: UIControl.Event.touchUpInside)
         messageView = createMessageView()
         view.addSubview(nameField)
         view.addSubview(sexField)
+        view.addSubview(passwordField)
         view.addSubview(nameError)
         view.addSubview(sexError)
+        view.addSubview(passwordError)
         view.addSubview(registerBackButton)
         view.addSubview(registerButton)
         view.addSubview(messageView)
@@ -62,6 +68,10 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
             UIView.animate(withDuration: 0.25, animations: { self.sexError.alpha = 1.0 })
             valid = false;
         }
+        if (passwordField.text == "") {
+            UIView.animate(withDuration: 0.25, animations: { self.passwordError.alpha = 1.0 })
+            valid = false;
+        }
         if (!valid) { return }
 
         let alert = UIAlertController(title: nil, message: "registeringLabel".localized, preferredStyle: .alert)
@@ -82,6 +92,8 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
             self.nameField.textColor = UIColor.gray
             self.sexField.isEnabled = false
             self.sexField.textColor = UIColor.gray
+            self.passwordField.isEnabled = false
+            self.passwordField.textColor = UIColor.gray
             UIView.animate(withDuration: 0.25, delay: 0, options: UIView.AnimationOptions(), animations: {
                 let frame = self.messageView.frame
                 self.messageView.frame = CGRect(x: frame.origin.x, y: frame.origin.y - frame.size.height, width: frame.size.width, height: frame.size.height)
@@ -111,6 +123,10 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
         sexField.isEnabled = true
         sexField.textColor = UIColor.black
         sexField.text = ""
+        passwordError.alpha = 0
+        passwordField.isEnabled = true
+        passwordField.textColor = UIColor.black
+        passwordField.text = ""
         registerButton.isHidden = false
         registerButton.alpha = 1        
     }
@@ -128,7 +144,7 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
     }
     
     func createButton(title: String, target: Any?, selector: Selector, event:UIControl.Event) -> (UIButton) {
-        let button = UIButton(frame: CGRect(x: 30, y: 304, width: view.frame.width - 60, height: 56.0))
+        let button = UIButton(frame: CGRect(x: 30, y: 404, width: view.frame.width - 60, height: 56.0))
         button.setTitle(title, for: UIControl.State())
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
         button.setBackgroundImage(UIImage(named: "ButtonBase"), for: UIControl.State())
@@ -159,6 +175,12 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
         inputField.leftViewMode = UITextField.ViewMode.always
         inputField.layer.addSublayer(self.createTopBorder(width: inputField.bounds.size.width))
         inputField.layer.addSublayer(self.createBottomBorder(height: inputField.bounds.size.height, width: inputField.bounds.size.width))
+        return inputField
+    }
+
+    func createSecureField(frame: CGRect, text: String) -> (UITextField) {
+        let inputField = createInputField(frame: frame, text: text);
+        inputField.isSecureTextEntry = true;
         return inputField
     }
     

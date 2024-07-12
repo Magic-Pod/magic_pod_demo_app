@@ -9,6 +9,7 @@
 "viewTitle" = "ユーザー登録";
 "nameFieldLabel" = "    名前  ";
 "sexFieldLabel" = "    性別  ";
+"passwordFieldLabel" = "    パスワード  ";
 "registerBackButtonTitle" = "戻る";
 "registerButtonTitle" = "登録";
 "registeringLabel" = "登録しています...";
