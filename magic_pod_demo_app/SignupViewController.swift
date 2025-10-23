@@ -23,12 +23,12 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
 
         title = "viewTitle".localized
         view.backgroundColor = UIColor(red: 236 / 255.0, green: 240 / 255.0, blue: 241 / 255.0, alpha: 1.0)
-        nameField = createInputField(frame: CGRect(x: 0, y: 100, width: view.frame.width, height: 56.0), text: "nameFieldLabel".localized)
-        sexField = createInputField(frame: CGRect(x: 0, y: 200, width: view.frame.width, height: 56.0), text: "sexFieldLabel".localized)
+        nameField = createInputField(frame: CGRect(x: 0, y: 120, width: view.frame.width, height: 56.0), text: "nameFieldLabel".localized)
+        sexField = createInputField(frame: CGRect(x: 0, y: 220, width: view.frame.width, height: 56.0), text: "sexFieldLabel".localized)
         nameError = createErrorLabel(y: nameField.frame.origin.y + nameField.bounds.size.height + 8.0)
         sexError = createErrorLabel(y: sexField.frame.origin.y + sexField.bounds.size.height + 8.0)
-        registerBackButton = self.createButton(title: "registerBackButtonTitle".localized, target: self,selector: #selector(SignupViewController.registerBackPressed(_:)), event: UIControl.Event.touchUpInside)
-        registerButton = self.createButton(title: "registerButtonTitle".localized, target: self,selector: #selector(SignupViewController.registerPressed(_:)), event: UIControl.Event.touchUpInside)
+        registerBackButton = self.createButton(title: "registerBackButtonTitle".localized, y: 324, target: self,selector: #selector(SignupViewController.registerBackPressed(_:)), event: UIControl.Event.touchUpInside)
+        registerButton = self.createButton(title: "registerButtonTitle".localized, y: 324, target: self,selector: #selector(SignupViewController.registerPressed(_:)), event: UIControl.Event.touchUpInside)
         messageView = createMessageView()
         view.addSubview(nameField)
         view.addSubview(sexField)
@@ -127,8 +127,8 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
         return messageView
     }
     
-    func createButton(title: String, target: Any?, selector: Selector, event:UIControl.Event) -> (UIButton) {
-        let button = UIButton(frame: CGRect(x: 30, y: 304, width: view.frame.width - 60, height: 56.0))
+    func createButton(title: String, y: CGFloat, target: Any?, selector: Selector, event:UIControl.Event) -> (UIButton) {
+        let button = UIButton(frame: CGRect(x: 30, y: y, width: view.frame.width - 60, height: 56.0))
         button.setTitle(title, for: UIControl.State())
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
         button.setBackgroundImage(UIImage(named: "ButtonBase"), for: UIControl.State())
