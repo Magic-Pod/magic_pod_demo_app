@@ -23,13 +23,27 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
 
         title = "viewTitle".localized
         view.backgroundColor = UIColor(red: 236 / 255.0, green: 240 / 255.0, blue: 241 / 255.0, alpha: 1.0)
-        nameField = createInputField(frame: CGRect(x: 0, y: 120, width: view.frame.width, height: 56.0), text: "nameFieldLabel".localized)
-        sexField = createInputField(frame: CGRect(x: 0, y: 220, width: view.frame.width, height: 56.0), text: "sexFieldLabel".localized)
-        nameError = createErrorLabel(y: nameField.frame.origin.y + nameField.bounds.size.height + 8.0)
-        sexError = createErrorLabel(y: sexField.frame.origin.y + sexField.bounds.size.height + 8.0)
-        registerBackButton = self.createButton(title: "registerBackButtonTitle".localized, y: 324, target: self,selector: #selector(SignupViewController.registerBackPressed(_:)), event: UIControl.Event.touchUpInside)
-        registerButton = self.createButton(title: "registerButtonTitle".localized, y: 324, target: self,selector: #selector(SignupViewController.registerPressed(_:)), event: UIControl.Event.touchUpInside)
+
+        // Create fields
+        nameField = createInputField(frame: .zero, text: "nameFieldLabel".localized)
+        sexField = createInputField(frame: .zero, text: "sexFieldLabel".localized)
+        nameField.translatesAutoresizingMaskIntoConstraints = false
+        sexField.translatesAutoresizingMaskIntoConstraints = false
+
+        // Create error labels
+        nameError = createErrorLabel()
+        sexError = createErrorLabel()
+
+        // Create register buttons
+        registerBackButton = self.createButton(title: "registerBackButtonTitle".localized, y: 0, target: self, selector: #selector(SignupViewController.registerBackPressed(_:)), event: UIControl.Event.touchUpInside)
+        registerBackButton.translatesAutoresizingMaskIntoConstraints = false
+        registerButton = self.createButton(title: "registerButtonTitle".localized, y: 0, target: self, selector: #selector(SignupViewController.registerPressed(_:)), event: UIControl.Event.touchUpInside)
+        registerButton.translatesAutoresizingMaskIntoConstraints = false
+
+        // Create bottom message
         messageView = createMessageView()
+
+        // Add subviews
         view.addSubview(nameField)
         view.addSubview(sexField)
         view.addSubview(nameError)
@@ -37,6 +51,41 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
         view.addSubview(registerBackButton)
         view.addSubview(registerButton)
         view.addSubview(messageView)
+
+        // Layout constraints for nameField, sexField, error labels and buttons
+        let safeArea = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            // nameField constraints
+            nameField.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 16),
+            nameField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 0),
+            nameField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: 0),
+            nameField.heightAnchor.constraint(equalToConstant: 56),
+
+            // sexField constraints
+            sexField.topAnchor.constraint(equalTo: nameField.bottomAnchor, constant: 48),
+            sexField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 0),
+            sexField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: 0),
+            sexField.heightAnchor.constraint(equalToConstant: 56),
+
+            // nameError constraints
+            nameError.topAnchor.constraint(equalTo: nameField.bottomAnchor, constant: 8),
+            nameError.leadingAnchor.constraint(equalTo: nameField.leadingAnchor, constant: 72),
+
+            // sexError constraints
+            sexError.topAnchor.constraint(equalTo: sexField.bottomAnchor, constant: 8),
+            sexError.leadingAnchor.constraint(equalTo: sexField.leadingAnchor, constant: 72),
+
+            // Buttons constraints: overlap each other below sexError with vertical spacing 40
+            registerButton.topAnchor.constraint(equalTo: sexError.bottomAnchor, constant: 40),
+            registerButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 32),
+            registerButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -32),
+            registerButton.heightAnchor.constraint(equalToConstant: 56),
+
+            registerBackButton.topAnchor.constraint(equalTo: sexError.bottomAnchor, constant: 40),
+            registerBackButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 32),
+            registerBackButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -32),
+            registerBackButton.heightAnchor.constraint(equalToConstant: 56)
+        ])
 
         let tgr = UITapGestureRecognizer(target: self, action: #selector(SignupViewController.dismissKeyboard))
         view.addGestureRecognizer(tgr)
@@ -128,7 +177,7 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
     }
     
     func createButton(title: String, y: CGFloat, target: Any?, selector: Selector, event:UIControl.Event) -> (UIButton) {
-        let button = UIButton(frame: CGRect(x: 30, y: y, width: view.frame.width - 60, height: 56.0))
+        let button = UIButton(frame: .zero)
         button.setTitle(title, for: UIControl.State())
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
         button.setBackgroundImage(UIImage(named: "ButtonBase"), for: UIControl.State())
@@ -137,13 +186,12 @@ class SignupViewController: UIViewController, UIPickerViewDelegate, UITextFieldD
         return button
     }
     
-    func createErrorLabel(y: CGFloat) -> (UILabel) {
+    func createErrorLabel() -> (UILabel) {
         let label = UILabel()
         label.text = "pleaseInputLabel".localized
         label.textColor = UIColor(red: 231 / 255.0, green: 76 / 255.0, blue: 60 / 255.0, alpha: 1.0)
         label.font = label.font.withSize(12.0)
-        label.sizeToFit()
-        label.frame = CGRect(x: 72, y: y, width: label.bounds.size.width, height: label.bounds.size.height)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.alpha = 0
         return label
     }
